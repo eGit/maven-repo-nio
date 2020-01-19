@@ -84,12 +84,19 @@ abstract class NIOA {
 //			2. target: /ordner/file.txt/ -> file wird als Datei im Zipfile angelegt
 //			3. target: /ordner/file/     -> file wird als Ordner im Zipfile angelegt !!!
 //			Bei file2zip ist in dieser Methode source == path und source.relativize(path) ein leerer String. 
-//			Dadurch wird also target = /ordner/file durch target.resolve("") /ordner/file/ und dadurch wird ein Ordner im Zipfile angelegt
+//			Dadurch wird also target = /ordner/file durch target.resolve("") zu /ordner/file/ und dadurch wird ein Ordner im Zipfile angelegt
 //			String relativize = source.relativize(path).toString();
 //			Path resolve = relativize.isEmpty() ? target : target.resolve(relativize);
 //		}
-		
+
+//		FOR DEBUGGING!
+//		System.out.println("source: " + source);
+//		System.out.println("target: " + target);
+//		System.out.println("path: " + path);
+//		System.out.println("source.relativize(path): " + source.relativize(path));
 		Path resolve = target.resolve(source.relativize(path).toString());
+//		System.out.println("resolve: " + resolve);
+//		System.out.println();
 		
 		if (isDirectory == false) {
 			String res = resolve.toString();

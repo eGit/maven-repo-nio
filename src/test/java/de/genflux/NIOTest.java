@@ -13,9 +13,11 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Comparator;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 
 
 /**
@@ -23,79 +25,137 @@ import org.junit.Test;
  *
  */
 public class NIOTest {
-    public static final String RESULT_FILESET = "result";
-	
-    private Path out;
+    
+    private static final String file = "main/java/de/genflux/NIO.java";
 
-    @Before
-    public void setUp() throws IOException {
+	@Rule public TestName name = new TestName();
+    
+    private static final String s = File.separator;
+    private static Path srcFolder = Paths.get("./src");
+    private static Path out;
+	private static Path start;
+	private static NIO nio;
+
+    
+    @BeforeClass
+    public static void setUp() throws IOException {
     	out = Files.createTempDirectory("output");
+		start = out.resolve("start.zip");
+		nio = NIO.info();
+		nio.folder2zip(srcFolder, start);
+		assertTrue(exists(start));
     }
     
-    @After
-    public void tearDown() throws IOException {
+    @AfterClass
+    public static void tearDown() throws IOException {
 //    	delete(out);
     }
     
-    /**
-     * Test file/folder/zip copy operations 
-     * @throws IOException 
-     */
+    private Path getTestZip(String name) throws IOException {
+    	Path testZip = out.resolve(name + ".zip");
+		Files.copy(start, testZip);
+    	assertTrue(exists(testZip));
+    	return testZip;
+	}
+    
+    private String[] getArgs(String path) {
+    	return new String[] {path, s + path, path + s, s + path + s};		
+	}
+    
     @Test
-    public void testCopyOperations() throws IOException {
-    	Path srcFolder = Paths.get("./src");
-		Path start = out.resolve("start.zip");
-		Path file1 = out.resolve("file1");
-		Path folder1 = out.resolve("folder1");
-		Path folder2 = out.resolve("folder2");
-		Path zip1 = out.resolve("zip1.zip");
-		Path folder3 = out.resolve("folder3");
-		Path zip2 = out.resolve("zip2.zip");
+    public void file2file() throws IOException {
+    	Path file2 = out.resolve(name.getMethodName() + ".zip");
+		nio.file2file(start, file2);
+		assertTrue(exists(file2) && Files.isDirectory(file2) == false);
+    }
+    
+    @Test
+    public void file2zip() throws IOException {
+    	String sub = "sub";
+    	String[] args = new String[] {sub, s + sub, sub + s, s + sub + s};
+    	for (int i = 0; i < args.length; i++) {
+    		Path zip = getTestZip(name.getMethodName() + i);
+    		nio.file2zip(start, zip, args[i]);
+    		assertTrue(existsInZip(zip, sub + s + start.getFileName()));
+		}
+    }
+    
+    @Test
+    public void filefromZip2folder() throws IOException {
+    	String[] args = getArgs(file);
+    	for (int i = 0; i < args.length; i++) {
+    		Path folder = out.resolve(name.getMethodName() + i);
+			nio.filefromZip2folder(start, args[i], folder);
+    		assertTrue(exists(folder.resolve("NIO.java")));
+    	}
+    }
+    
+    @Test
+    public void file2folder() throws IOException {
+		Path folder = out.resolve(name.getMethodName());
+		nio.file2folder(start, folder);
+		assertTrue(exists(folder.resolve(start.getFileName())));
+    }
+    
+    @Test
+    public void folder2folder() throws IOException {
+    	Path folder = out.resolve(name.getMethodName());
+		nio.folder2folder(srcFolder, folder);
+		assertTrue(exists(folder.resolve(file)));
+    }
+    
+    @Test
+    public void folder2zip() throws IOException {
+    	Path zip = out.resolve(name.getMethodName() + ".zip");
+		nio.folder2zip(srcFolder, zip);
+		assertTrue(existsInZip(zip, file));
 		
-		NIO nio = NIO.info(); // debug();
-		nio.folder2zip(srcFolder, start);
-		assertTrue(exists(start));
+		String[] args = getArgs("just/for/fun");
+		for (int i = 0; i < args.length; i++) {
+			Path testZip = getTestZip(name.getMethodName() + i);
+			String zipSubFolder = args[i];
+			nio.folder2zip(srcFolder, testZip, zipSubFolder);
+			assertTrue(existsInZip(testZip, zipSubFolder + s + file));
+		}
+    }
+    
+    @Test
+    public void zip2folder() throws IOException {
+		Path folder = out.resolve(name.getMethodName());
+		nio.zip2folder(start, folder);
+		assertTrue(exists(folder.resolve(file)));
 		
-		nio.file2file(start, file1);
-		assertTrue(exists(file1));
+		String zipSubfolder = "main/java";
+		String[] args = getArgs(zipSubfolder);
+		for (int i = 0; i < args.length; i++) {
+			folder = out.resolve(name.getMethodName() + i);
+			nio.zip2folder(start, args[i], folder);
+			assertTrue(exists(folder.resolve("de/genflux/NIO.java")));
+		}
+    }
+    
+    @Test
+    public void zip2zip() throws IOException {
+		Path testZip = getTestZip(name.getMethodName());
+		nio.zip2zip(start, testZip);
+		assertTrue(existsInZip(testZip, file));
 		
-		nio.file2zip(file1, start, "sub");
-		assertTrue(existsInZip(start, "sub/file1"));
+		String zip1Subfolder = "main/java";
+		String[] args1 = getArgs(zip1Subfolder);
+		String zip2Subfolder = "just/for/fun";
+		String[] args2 = getArgs(zip2Subfolder);
 		
-		String NIO = "main/java/de/genflux/NIO.java";
-		nio.filefromZip2folder(start, NIO, out);
-		assertTrue(exists(out.resolve("NIO.java")));
-		
-		nio.file2folder(file1, folder1);
-		assertTrue(exists(folder1.resolve(file1)));
-		
-		nio.folder2folder(srcFolder, folder2);
-		assertTrue(exists(folder2.resolve(NIO)));
-		
-		nio.folder2zip(folder1, zip1);
-		assertTrue(existsInZip(zip1, "file1"));
-		
-		String zipSubfolder = "just/for/fun";
-		nio.folder2zip(folder2, zip2, zipSubfolder);
-		assertTrue(existsInZip(zip2, zipSubfolder + "/" + NIO));
-		
-		nio.zip2folder(zip1, folder3);
-		assertTrue(exists(folder3.resolve("file1")));
-		
-		System.err.println("WARNING: fix this problem: " + this.getClass());
-		nio.zip2folder(start, "/main/java", folder3); // does not work without the starting slash /
-		assertTrue(exists(folder3.resolve("de/genflux/NIO.java")));
-
-		nio.zip2zip(zip1, zip2);
-		assertTrue(existsInZip(zip2, "file1"));
-		
-		System.err.println("WARNING: fix this problem: " + this.getClass());
-		nio.zip2zip(zip2, "/just/for", start, "main");  // does not work without the starting slash /
-		assertTrue(existsInZip(start, "main/fun/" + NIO));
+		for (int i = 0; i < args1.length; i++) {
+			for (int j = 0; j < args2.length; j++) {
+				testZip = getTestZip(name.getMethodName() + i + "-" + j);
+				nio.zip2zip(start, args1[i], testZip, args2[j]);
+				assertTrue(existsInZip(testZip, args2[j] + s + "de/genflux/NIO.java"));
+			}
+		}
     }
 
     
-    private boolean exists(Path file) {
+    private static boolean exists(Path file) {
 		return Files.exists(file);
 	}
     

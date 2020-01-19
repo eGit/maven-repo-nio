@@ -1,6 +1,8 @@
 package de.genflux;
 
 import static de.genflux.NIO.Type.*;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.FileSystem;
@@ -131,6 +133,7 @@ public class NIO extends NIOA {
 	public NIO zip2folder(String zipfile, String zipSubfolder, String folder) throws IOException { return zip2folder(Paths.get(zipfile), zipSubfolder, Paths.get(folder)); }
 	public NIO zip2folder(Path zipfile, String zipSubfolder, Path folder) throws IOException {
 		check(zipfile, Zip, folder, Folder);
+		zipSubfolder = normalizeZipPath(zipSubfolder);
 		try (FileSystem fs = newFileSystem(zipfile)) { copywalk(fs.getPath(zipSubfolder), folder); }
 		return this;
 	}
@@ -148,10 +151,26 @@ public class NIO extends NIOA {
 	public NIO zip2zip(String zipfile1, String zip1Subfolder, String zipfile2, String zip2Subfolder) throws IOException { return zip2zip(Paths.get(zipfile1), zip1Subfolder, Paths.get(zipfile2), zip2Subfolder); }
 	public NIO zip2zip(Path zipfile1, String zip1Subfolder, Path zipfile2, String zip2Subfolder) throws IOException {
 		check(zipfile1, Zip, zipfile2, Zip);
+		zip1Subfolder = normalizeZipPath(zip1Subfolder);
+		zip2Subfolder = normalizeZipPath(zip2Subfolder);
 		try (FileSystem fsZip1 = newFileSystem(zipfile1); FileSystem fsZip2 = newFileSystem(zipfile2)) { 
 			copywalk(fsZip1.getPath(zip1Subfolder), fsZip2.getPath(zip2Subfolder));
 		} // try-with-resources java.lang.AutoCloseable
 		return this;
+	}
+
+	/**
+	 * The current implementation of {@link #targetPath(Path, Path, Path, boolean)} fails when zipSubfolder EITHER starts without a '/' or ends with a '/'  
+	 */
+	private String normalizeZipPath(String zipSubfolder) {
+		final String separator = java.io.File.separator;
+		if (zipSubfolder.startsWith(separator) == false) zipSubfolder = separator + zipSubfolder;
+		if (zipSubfolder.length() != 1) {
+			while (zipSubfolder.endsWith(separator)) {
+				zipSubfolder = zipSubfolder.substring(0, zipSubfolder.length() - 1);
+			}
+		}
+		return zipSubfolder;
 	}
 
 //	***** END: FOLDER OPERATIONS *****
