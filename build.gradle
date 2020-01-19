@@ -1,0 +1,43 @@
+plugins {
+    id "java"
+    id "eclipse"
+    id 'maven-publish'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+		implementation "junit:junit:4.12"
+		implementation "org.hamcrest:hamcrest-library:2.2"
+}
+
+java {
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'de.genflux'
+            artifactId = 'nio'
+            version = '0.1'
+
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name = "-My-Repo-" // check publish task descriptions to see which one publishes to "myrepo"
+            url = "$projectDir" // the project folder is the repo
+        }
+    }
+}
+
+
+help.doLast({
+    println("\n\n\ngradle cleanEclipse eclipse\n")
+    println("\ngradle publishAllPublicationsTo-My-Repo-Repository\n\n")
+})
