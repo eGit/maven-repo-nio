@@ -16,6 +16,9 @@ import java.util.Collections;
 
 import de.genflux.NIOActions.Action;
 
+/**
+ * There are two major types of copy operations: file2file and folder2folder
+ */
 public class NIO extends NIOA {
 	
 	private final static byte[] EmptyZip={80,75,05,06,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00,00};
@@ -64,12 +67,34 @@ public class NIO extends NIOA {
 	}
 
 	public NIO filefromZip2folder(Path zipfile, String filepath, Path folder) throws IOException {
+		filepath = normalizeZipPath(filepath);
 		try (FileSystem fs = newFileSystem(zipfile)) {
 //			copywalk(file, check(fs, zip, zipSubfolder).resolve(file.getFileName().toString()));
 			Path fileinzip = fs.getPath(filepath);
-			check(zipfile, File, folder, Folder); // first check the existence of the zipfile
+			check(zipfile, Zip, folder, Folder); // first check the existence of the zipfile
 			check(fileinzip, File, folder, Folder);  // then the existence of the file in the zipfile
 			Files.copy(fileinzip, folder.resolve(fileinzip.getFileName().toString()));
+		}
+		return this;
+	}
+	
+	/**
+	 * Preserves the location (folder-structure and file name) of @param filepath1
+	 */
+	public NIO filefromZip2zip(Path zipfile1, String filepath1, Path zipfile2) throws IOException { return filefromZip2zip(zipfile1, filepath1, zipfile2, filepath1);}
+	public NIO filefromZip2zip(Path zipfile1, String filepath1, Path zipfile2, String filepath2) throws IOException {
+		filepath1 = normalizeZipPath(filepath1);
+		filepath2 = normalizeZipPath(filepath2);
+		check(zipfile1, Zip, zipfile2, Zip); // first check the existence of the zipfile
+		try (FileSystem fs1 = newFileSystem(zipfile1); FileSystem fs2 = newFileSystem(zipfile2)) {
+//			copywalk(file, check(fs, zip, zipSubfolder).resolve(file.getFileName().toString()));
+			Path fileinzip1 = fs1.getPath(filepath1);
+			Path fileinzip2 = fs2.getPath(filepath2);
+			check(fileinzip1, File, fileinzip2.getParent(), Folder);  // check the existence of the file in zipfile1 and create a folder in zipfile2
+			Files.copy(fileinzip1, fileinzip2);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 		return this;
 	}
@@ -122,9 +147,7 @@ public class NIO extends NIOA {
 	 * Copy contents of a zip to a folder
 	 */
 	public NIO zip2folder(String zipfile, String folder) throws IOException { return zip2folder(zipfile, "/", folder); }
-	public NIO zip2folder(Path zipfile, Path folder) throws IOException {
-		return zip2folder(zipfile, "/", folder);
-	}
+	public NIO zip2folder(Path zipfile, Path folder) throws IOException { return zip2folder(zipfile, "/", folder); }
 	
 	/**
 	 * Copy contents of a zip-subfolder to a folder

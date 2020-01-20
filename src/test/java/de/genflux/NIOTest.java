@@ -74,10 +74,24 @@ public class NIOTest {
     	String sub = "sub";
     	String[] args = new String[] {sub, s + sub, sub + s, s + sub + s};
     	for (int i = 0; i < args.length; i++) {
-    		Path zip = getTestZip(name.getMethodName() + i);
-    		nio.file2zip(start, zip, args[i]);
-    		assertTrue(existsInZip(zip, sub + s + start.getFileName()));
+    		Path testZip = getTestZip(name.getMethodName() + i);
+    		nio.file2zip(start, testZip, args[i]);
+    		assertTrue(existsInZip(testZip, sub + s + start.getFileName()));
 		}
+    }
+    
+    @Test
+    public void filefromZip2Zip() throws IOException {
+    	Path emptyZip = out.resolve(name.getMethodName() + ".zip");
+		nio.filefromZip2zip(start, file, emptyZip);
+    	assertTrue(existsInZip(emptyZip, file));
+    	
+    	String[] args = getArgs(file);
+    	for (int i = 0; i < args.length; i++) {
+    		String filepath2 = s + i + s + i + ".java";
+			nio.filefromZip2zip(start, args[i], emptyZip, filepath2);
+			assertTrue(existsInZip(emptyZip, filepath2));
+    	}
     }
     
     @Test
@@ -85,7 +99,7 @@ public class NIOTest {
     	String[] args = getArgs(file);
     	for (int i = 0; i < args.length; i++) {
     		Path folder = out.resolve(name.getMethodName() + i);
-			nio.filefromZip2folder(start, args[i], folder);
+    		nio.filefromZip2folder(start, args[i], folder);
     		assertTrue(exists(folder.resolve("NIO.java")));
     	}
     }
