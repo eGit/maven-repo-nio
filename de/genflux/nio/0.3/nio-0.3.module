@@ -3,7 +3,7 @@
   "component": {
     "group": "de.genflux",
     "module": "nio",
-    "version": "0.2",
+    "version": "0.3",
     "attributes": {
       "org.gradle.status": "release"
     }
@@ -11,7 +11,7 @@
   "createdBy": {
     "gradle": {
       "version": "6.1",
-      "buildId": "43osrqfbh5a4he5cfqhddncxva"
+      "buildId": "v3daq4dpm5benisd6ehuce2aum"
     }
   },
   "variants": [
@@ -26,8 +26,8 @@
       },
       "files": [
         {
-          "name": "nio-0.2.jar",
-          "url": "nio-0.2.jar",
+          "name": "nio-0.3.jar",
+          "url": "nio-0.3.jar",
           "size": 46559,
           "sha512": "fd80c7e149b325034dbd792c0e49ce98380a3480bf317550300c6df6c592fc902e97653e9e2c81786f4a8482e5e3f538d89904ffc72059a5c1248ef5cdc954c2",
           "sha256": "18930e825166ed587b45bb068e7d3706757e7e082e95a9ef61a82ef2aac1d267",
@@ -63,8 +63,8 @@
       ],
       "files": [
         {
-          "name": "nio-0.2.jar",
-          "url": "nio-0.2.jar",
+          "name": "nio-0.3.jar",
+          "url": "nio-0.3.jar",
           "size": 46559,
           "sha512": "fd80c7e149b325034dbd792c0e49ce98380a3480bf317550300c6df6c592fc902e97653e9e2c81786f4a8482e5e3f538d89904ffc72059a5c1248ef5cdc954c2",
           "sha256": "18930e825166ed587b45bb068e7d3706757e7e082e95a9ef61a82ef2aac1d267",
@@ -83,8 +83,8 @@
       },
       "files": [
         {
-          "name": "nio-0.2-sources.jar",
-          "url": "nio-0.2-sources.jar",
+          "name": "nio-0.3-sources.jar",
+          "url": "nio-0.3-sources.jar",
           "size": 38242,
           "sha512": "dac3d305afd6cf5d270eab0a0b72bfafc4c24f93d251d471e7b819988fc9ce9e9b0d50bb5b0d7cf4462700bd2f6ebafbd54bf901ae5119999ffc5ceb41abd451",
           "sha256": "bc1589e9cf5eadcccc26627398b1d2c3d7ec9ca3ce93d37999d18747e4ec70cb",

@@ -23,7 +23,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'de.genflux'
             artifactId = 'nio'
-            version = '0.2'
+            version = '0.3'
 
             from components.java
         }
