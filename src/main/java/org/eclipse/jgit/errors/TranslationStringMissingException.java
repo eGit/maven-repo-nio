@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2008, Florian Koeberle <florianskarten@web.de>
- * Copyright (C) 2008, Florian Köberle <florianskarten@web.de>
- * Copyright (C) 2009, Vasyl' Vavrychuk <vvavrychuk@gmail.com>
+ * Copyright (C) 2010, Sasa Zivkov <sasa.zivkov@sap.com>
  * and other copyright owners as documented in the project's IP log.
  *
  * This program and the accompanying materials are made available
@@ -42,54 +40,47 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.eclipse.jgit.errors;
 
+import java.util.Locale;
+
 /**
- * Thrown when a pattern passed in an argument was wrong.
+ * This exception will be thrown when a translation string for a translation
+ * bundle and locale is missing.
  */
-public class InvalidPatternException extends Exception {
+public class TranslationStringMissingException extends TranslationBundleException {
 	private static final long serialVersionUID = 1L;
 
-	private final String pattern;
+	private final String key;
 
 	/**
-	 * Constructor for InvalidPatternException
+	 * Construct a
+	 * {@link org.eclipse.jgit.errors.TranslationStringMissingException} for the
+	 * specified bundle class, locale and translation key
 	 *
-	 * @param message
-	 *            explains what was wrong with the pattern.
-	 * @param pattern
-	 *            the invalid pattern.
-	 */
-	public InvalidPatternException(String message, String pattern) {
-		super(message);
-		this.pattern = pattern;
-	}
-
-	/**
-	 * Constructor for InvalidPatternException
-	 *
-	 * @param message
-	 *            explains what was wrong with the pattern.
-	 * @param pattern
-	 *            the invalid pattern.
+	 * @param bundleClass
+	 *            the bundle class for which a translation string was missing
+	 * @param locale
+	 *            the locale for which a translation string was missing
+	 * @param key
+	 *            the key of the missing translation string
 	 * @param cause
-	 *            the cause.
-	 * @since 4.10
+	 *            the original exception thrown from the
+	 *            {@link java.util.ResourceBundle#getString(String)} method.
 	 */
-	public InvalidPatternException(String message, String pattern,
-			Throwable cause) {
-		this(message, pattern);
-		initCause(cause);
+	public TranslationStringMissingException(Class bundleClass, Locale locale, String key, Exception cause) {
+		super("Translation missing for [" + bundleClass.getName() + ", " //$NON-NLS-1$ //$NON-NLS-2$
+				+ locale.toString() + ", " + key + "]", bundleClass, locale, //$NON-NLS-1$ //$NON-NLS-2$
+				cause);
+		this.key = key;
 	}
 
 	/**
-	 * Get the invalid pattern
+	 * Get the key of the missing translation string
 	 *
-	 * @return the invalid pattern.
+	 * @return the key of the missing translation string
 	 */
-	public String getPattern() {
-		return pattern;
+	public String getKey() {
+		return key;
 	}
-
 }

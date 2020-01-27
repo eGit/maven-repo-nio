@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2008, Florian Koeberle <florianskarten@web.de>
- * Copyright (C) 2008, Florian Köberle <florianskarten@web.de>
- * Copyright (C) 2009, Vasyl' Vavrychuk <vvavrychuk@gmail.com>
+ * Copyright (C) 2010, Sasa Zivkov <sasa.zivkov@sap.com>
  * and other copyright owners as documented in the project's IP log.
  *
  * This program and the accompanying materials are made available
@@ -42,54 +40,34 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.eclipse.jgit.errors;
 
+import java.util.Locale;
+
 /**
- * Thrown when a pattern passed in an argument was wrong.
+ * This exception will be thrown when a translation bundle loading
+ * fails.
  */
-public class InvalidPatternException extends Exception {
+public class TranslationBundleLoadingException extends TranslationBundleException {
 	private static final long serialVersionUID = 1L;
 
-	private final String pattern;
-
 	/**
-	 * Constructor for InvalidPatternException
+	 * Construct a
+	 * {@link org.eclipse.jgit.errors.TranslationBundleLoadingException} for the
+	 * specified bundle class and locale.
 	 *
-	 * @param message
-	 *            explains what was wrong with the pattern.
-	 * @param pattern
-	 *            the invalid pattern.
-	 */
-	public InvalidPatternException(String message, String pattern) {
-		super(message);
-		this.pattern = pattern;
-	}
-
-	/**
-	 * Constructor for InvalidPatternException
-	 *
-	 * @param message
-	 *            explains what was wrong with the pattern.
-	 * @param pattern
-	 *            the invalid pattern.
+	 * @param bundleClass
+	 *            the bundle class for which the loading failed
+	 * @param locale
+	 *            the locale for which the loading failed
 	 * @param cause
-	 *            the cause.
-	 * @since 4.10
+	 *            the original exception thrown from the
+	 *            {@link java.util.ResourceBundle#getBundle(String, Locale)}
+	 *            method.
 	 */
-	public InvalidPatternException(String message, String pattern,
-			Throwable cause) {
-		this(message, pattern);
-		initCause(cause);
+	public TranslationBundleLoadingException(Class bundleClass, Locale locale, Exception cause) {
+		super("Loading of translation bundle failed for [" //$NON-NLS-1$
+				+ bundleClass.getName() + ", " + locale.toString() + "]", //$NON-NLS-1$ //$NON-NLS-2$
+				bundleClass, locale, cause);
 	}
-
-	/**
-	 * Get the invalid pattern
-	 *
-	 * @return the invalid pattern.
-	 */
-	public String getPattern() {
-		return pattern;
-	}
-
 }

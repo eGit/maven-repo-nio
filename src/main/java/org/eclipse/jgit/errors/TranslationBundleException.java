@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2008, Florian Koeberle <florianskarten@web.de>
- * Copyright (C) 2008, Florian Köberle <florianskarten@web.de>
- * Copyright (C) 2009, Vasyl' Vavrychuk <vvavrychuk@gmail.com>
+ * Copyright (C) 2010, Sasa Zivkov <sasa.zivkov@sap.com>
  * and other copyright owners as documented in the project's IP log.
  *
  * This program and the accompanying materials are made available
@@ -42,54 +40,54 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.eclipse.jgit.errors;
 
+import java.util.Locale;
+
 /**
- * Thrown when a pattern passed in an argument was wrong.
+ * Common base class for all translation bundle related exceptions.
  */
-public class InvalidPatternException extends Exception {
+public abstract class TranslationBundleException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
-	private final String pattern;
+	private final Class bundleClass;
+	private final Locale locale;
 
 	/**
-	 * Constructor for InvalidPatternException
+	 * Construct an instance of
+	 * {@link org.eclipse.jgit.errors.TranslationBundleException}
 	 *
 	 * @param message
-	 *            explains what was wrong with the pattern.
-	 * @param pattern
-	 *            the invalid pattern.
-	 */
-	public InvalidPatternException(String message, String pattern) {
-		super(message);
-		this.pattern = pattern;
-	}
-
-	/**
-	 * Constructor for InvalidPatternException
-	 *
-	 * @param message
-	 *            explains what was wrong with the pattern.
-	 * @param pattern
-	 *            the invalid pattern.
+	 *            exception message
+	 * @param bundleClass
+	 *            bundle class for which the exception occurred
+	 * @param locale
+	 *            locale for which the exception occurred
 	 * @param cause
-	 *            the cause.
-	 * @since 4.10
+	 *            original exception that caused this exception. Usually thrown
+	 *            from the {@link java.util.ResourceBundle} class.
 	 */
-	public InvalidPatternException(String message, String pattern,
-			Throwable cause) {
-		this(message, pattern);
-		initCause(cause);
+	protected TranslationBundleException(String message, Class bundleClass, Locale locale, Exception cause) {
+		super(message, cause);
+		this.bundleClass = bundleClass;
+		this.locale = locale;
 	}
 
 	/**
-	 * Get the invalid pattern
+	 * Get bundle class
 	 *
-	 * @return the invalid pattern.
+	 * @return bundle class for which the exception occurred
 	 */
-	public String getPattern() {
-		return pattern;
+	final public Class getBundleClass() {
+		return bundleClass;
 	}
 
+	/**
+	 * Get locale for which the exception occurred
+	 *
+	 * @return locale for which the exception occurred
+	 */
+	final public Locale getLocale() {
+		return locale;
+	}
 }
