@@ -11,7 +11,7 @@
   "createdBy": {
     "gradle": {
       "version": "6.1",
-      "buildId": "v3daq4dpm5benisd6ehuce2aum"
+      "buildId": "yygpk2kepff7dl2ag6qkljojii"
     }
   },
   "variants": [
@@ -28,11 +28,11 @@
         {
           "name": "nio-0.3.jar",
           "url": "nio-0.3.jar",
-          "size": 46559,
-          "sha512": "fd80c7e149b325034dbd792c0e49ce98380a3480bf317550300c6df6c592fc902e97653e9e2c81786f4a8482e5e3f538d89904ffc72059a5c1248ef5cdc954c2",
-          "sha256": "18930e825166ed587b45bb068e7d3706757e7e082e95a9ef61a82ef2aac1d267",
-          "sha1": "ee28cc96e48d615a2ce876f0193f5c074797f13e",
-          "md5": "6ac8bce5b08d3d408e1db37fa1f2b9e9"
+          "size": 59281,
+          "sha512": "ce4b3c93fe144da8b1f20b63ddbb51b585ce45e07cf4d83320510bfd1c93464e5520e7e313d439344facc71e0156364738cf8a1415ff736ced587791b9498e21",
+          "sha256": "fccc4b7fa9f8cb54dcd05b173b4fe1d299b09d4cb5390775eb1a602e7d59c135",
+          "sha1": "7209a58e31d8b9eee97ec40c6edb0df2f86659b0",
+          "md5": "f4cf5a3058744cd213e86d15e25c64fc"
         }
       ]
     },
@@ -65,11 +65,11 @@
         {
           "name": "nio-0.3.jar",
           "url": "nio-0.3.jar",
-          "size": 46559,
-          "sha512": "fd80c7e149b325034dbd792c0e49ce98380a3480bf317550300c6df6c592fc902e97653e9e2c81786f4a8482e5e3f538d89904ffc72059a5c1248ef5cdc954c2",
-          "sha256": "18930e825166ed587b45bb068e7d3706757e7e082e95a9ef61a82ef2aac1d267",
-          "sha1": "ee28cc96e48d615a2ce876f0193f5c074797f13e",
-          "md5": "6ac8bce5b08d3d408e1db37fa1f2b9e9"
+          "size": 59281,
+          "sha512": "ce4b3c93fe144da8b1f20b63ddbb51b585ce45e07cf4d83320510bfd1c93464e5520e7e313d439344facc71e0156364738cf8a1415ff736ced587791b9498e21",
+          "sha256": "fccc4b7fa9f8cb54dcd05b173b4fe1d299b09d4cb5390775eb1a602e7d59c135",
+          "sha1": "7209a58e31d8b9eee97ec40c6edb0df2f86659b0",
+          "md5": "f4cf5a3058744cd213e86d15e25c64fc"
         }
       ]
     },
@@ -85,11 +85,11 @@
         {
           "name": "nio-0.3-sources.jar",
           "url": "nio-0.3-sources.jar",
-          "size": 38242,
-          "sha512": "dac3d305afd6cf5d270eab0a0b72bfafc4c24f93d251d471e7b819988fc9ce9e9b0d50bb5b0d7cf4462700bd2f6ebafbd54bf901ae5119999ffc5ceb41abd451",
-          "sha256": "bc1589e9cf5eadcccc26627398b1d2c3d7ec9ca3ce93d37999d18747e4ec70cb",
-          "sha1": "1a97cc2d24de37f42317dc373d5a9041c91bceb4",
-          "md5": "5d0fd07a73eceab3ee86443e87cce3ed"
+          "size": 56801,
+          "sha512": "9aab812a8c807ee1fb10b4c9a10bf7076b5ae6be80ccb9d340858310dfd17fe8fd64d36ba9bac2e82d72438ca9209409007481a19383730a127e87dab341a443",
+          "sha256": "d411a341325e6e583f32c505037845b95575d257a71146e43c8fbdad7b66c074",
+          "sha1": "45e7b9d2f0e8e3d5ffa4db63b422f297b9c7c595",
+          "md5": "52919c0b15dd67e38bbb7db22d713a72"
         }
       ]
     }
